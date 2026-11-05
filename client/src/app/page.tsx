@@ -3,7 +3,7 @@ import GetData from "./GetData";
 
 const HomePage = async () => {
     return (
-        <Suspense>
+        <Suspense fallback="loading...">
             <GetData />
         </Suspense>
     );
