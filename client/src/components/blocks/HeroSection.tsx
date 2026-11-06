@@ -1,0 +1,55 @@
+import { HeroSectionProps } from "@/types";
+import { StrapiImage } from "../StrapiImage";
+import Link from "next/link";
+
+const HeroSection = ({
+    theme,
+    heading,
+    callToAction,
+    image,
+    logo,
+    author,
+    publishedAt,
+    darken = false,
+}: Readonly<HeroSectionProps>) => {
+    return (
+        <section className="hero">
+            <div className="hero__background">
+                <StrapiImage
+                    src={image.url}
+                    alt={image.alternativeText || "No alternative text provided"}
+                    className="hero__background-image"
+                    width={1920}
+                    height={1080}
+                />
+                {darken && <div className="hero__background__overlay"></div>}
+            </div>
+            <div className={`hero__heading hero__heading--${theme}`}>
+                <h1>{heading}</h1>
+                {author && <p className="hero__author">{author}</p>}
+                {publishedAt && <p className="hero__published-at">{publishedAt}</p>}
+            </div>
+            {callToAction && (
+                <button className={`btn btn--medium btn--${theme}`}>
+                    <Link
+                        href={callToAction.url}
+                        target={callToAction.isExternal ? "_blank" : "_self"}
+                    >
+                        {callToAction.text}
+                    </Link>
+                </button>
+            )}
+            {logo && (
+                <StrapiImage
+                    src={logo.image.url}
+                    alt={logo.image.alternativeText || "No alternative text provided"}
+                    className={`hero__logo hero__logo--${theme}`}
+                    width={120}
+                    height={120}
+                />
+            )}
+        </section>
+    );
+};
+
+export default HeroSection;
