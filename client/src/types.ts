@@ -17,7 +17,11 @@ export interface LogoProps {
     image: ImageProps;
 }
 
-type ComponentType = "blocks.hero-section" | "blocks.info-block";
+type ComponentType =
+    | "blocks.hero-section"
+    | "blocks.info-block"
+    | "blocks.featured-article"
+    | "blocks.subscribe";
 
 interface Base<T extends ComponentType, D extends object = Record<string, unknown>> {
     id: number;
@@ -48,4 +52,18 @@ export interface InfoBlockProps extends Base<"blocks.info-block"> {
     callToAction?: LinkProps;
 }
 
-export type Block = HeroSectionProps | InfoBlockProps;
+export interface FeaturedArticleProps extends Base<"blocks.featured-article"> {
+    headline: string;
+    excerpt: string;
+    link: LinkProps;
+    image: ImageProps;
+}
+
+export interface SubscribeProps extends Base<"blocks.subscribe"> {
+    headline: string;
+    content: string;
+    placeholder: string;
+    buttonText: string;
+}
+
+export type Block = HeroSectionProps | InfoBlockProps | FeaturedArticleProps | SubscribeProps;

@@ -8,8 +8,10 @@ interface DynamicPageProps {
 
 async function loader(slug: string) {
     const { data } = await getPageBySlug(slug);
-    if (data.length === 0) notFound();
-    return { blocks: data[0]?.blocks };
+    console.log(data);
+
+    if (!data || data.length === 0) notFound();
+    else return { blocks: data[0]?.blocks };
 }
 
 const DynamicPage = async ({ params }: DynamicPageProps) => {

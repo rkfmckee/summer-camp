@@ -1,8 +1,9 @@
 import { fetchApiAsync } from "@/utils/fetchApi";
 import { getStrapiUrl } from "@/utils/strapiUtils";
+import qs from "qs";
 
 export const getHomePageDataAsync = async () => {
-    const qs = require("qs");
+    qs;
     const homePageQuery =
         "populate[blocks][on][blocks.hero-section][populate][image][fields][0]=url&populate[blocks][on][blocks.hero-section][populate][image][fields][1]=alternativeText&populate[blocks][on][blocks.hero-section][populate][logo][populate][image][fields][0]=url&populate[blocks][on][blocks.hero-section][populate][logo][populate][image][fields][1]=alternativeText&populate[blocks][on][blocks.hero-section][populate][callToAction]=true&populate[blocks][on][blocks.info-block][populate][image][fields][0]=url&populate[blocks][on][blocks.info-block][populate][image][fields][1]=alternativeText&populate[blocks][on][blocks.info-block][populate][callToAction]=true";
 
@@ -11,9 +12,56 @@ export const getHomePageDataAsync = async () => {
     return { ...response.data };
 };
 
+const pageBySlugQuery = (slug: string) =>
+    qs.stringify({
+        filters: {
+            slug: {
+                $eq: slug,
+            },
+        },
+        populate: {
+            blocks: {
+                on: {
+                    "blocks.hero-section": {
+                        populate: {
+                            image: {
+                                fields: ["url", "alternativeText"],
+                            },
+                            logo: {
+                                populate: {
+                                    image: {
+                                        fields: ["url", "alternativeText"],
+                                    },
+                                },
+                            },
+                            callToAction: true,
+                        },
+                    },
+                    "blocks.info-block": {
+                        populate: {
+                            image: {
+                                fields: ["url", "alternativeText"],
+                            },
+                            callToAction: true,
+                        },
+                    },
+                    "blocks.featured-article": {
+                        populate: {
+                            image: {
+                                fields: ["url", "alternativeText"],
+                            },
+                            link: true,
+                        },
+                    },
+                    "blocks.subscribe": true,
+                },
+            },
+        },
+    });
+
 export async function getPageBySlug(slug: string) {
-    const pageBySlugQuery = `filters[slug][$eq]=${slug}&populate[blocks][on][blocks.hero-section][populate][image][fields][0]=url&populate[blocks][on][blocks.hero-section][populate][image][fields][1]=alternativeText&populate[blocks][on][blocks.hero-section][populate][logo][populate][image][fields][0]=url&populate[blocks][on][blocks.hero-section][populate][logo][populate][image][fields][1]=alternativeText&populate[blocks][on][blocks.hero-section][populate][callToAction]=true&populate[blocks][on][blocks.info-block][populate][image][fields][0]=url&populate[blocks][on][blocks.info-block][populate][image][fields][1]=alternativeText&populate[blocks][on][blocks.info-block][populate][callToAction]=true`;
-    const url = getStrapiUrl(`/pages?${pageBySlugQuery}`, true);
+    const url = getStrapiUrl(`/pages?${pageBySlugQuery(slug)}`, true);
+    console.log(`Request to: ${url}`);
     return await fetchApiAsync(url, { method: "get" });
 }
 
