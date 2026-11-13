@@ -60,7 +60,7 @@ export interface FeaturedArticleProps extends Base<"blocks.featured-article"> {
 }
 
 export interface SubscribeProps extends Base<"blocks.subscribe"> {
-    headline: string;
+    heading: string;
     content: string;
     placeholder: string;
     buttonText: string;
